@@ -1,11 +1,11 @@
 <link rel="import" href="../base-page/base-page.html">
-<link rel="import" href="../../bower_components/core-list/core-list.html">
-<link rel="import" href="../../bower_components/core-menu/core-menu.html">
-<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../../../../packages/core_elements/core_list_dart.html">
+<link rel="import" href="../../../../packages/core_elements/core_menu.html">
+<link rel="import" href="../../../../packages/paper_elements/paper_menu_button.html">
+<link rel="import" href="../../../../packages/paper_elements/paper_dropdown.html">
 
 <polymer-element name="contacts-page" extends="base-page"
-                 attributes="contacts heading">
+                 attributes="contacts heading category">
   <template>
     <link rel="stylesheet" href="contacts-page.css">
 
@@ -16,17 +16,17 @@
         <core-toolbar>Menu</core-toolbar>
         <core-menu selected="0" on-core-select="{{closeDrawer}}">
           <paper-item noink>
-            <a href="/contacts/all" on-click="{{navigate}}">
+            <a route="/contacts/all" on-click="{{navigate}}">
               All Contacts
             </a>
           </paper-item>
           <paper-item noink>
-            <a href="/contacts/favorites" on-click="{{navigate}}">
+            <a route="/contacts/favorites" on-click="{{navigate}}">
               Favorites
             </a>
           </paper-item>
           <paper-item noink>
-            <a href="/contacts/circles" on-click="{{navigate}}">
+            <a route="/contacts/circles" on-click="{{navigate}}">
               Circles
             </a>
           </paper-item>
@@ -55,47 +55,30 @@
           </core-toolbar>
           <div class="content">
 
-            <core-list id="list" data="{{contacts}}"
-                                 scrollTarget="{{$.headerPanel.scroller}}"
+            <core-list-dart id="list" data="{{contacts}}"
+                                 scrollTarget="{{$['headerPanel'].scroller}}"
                                  runwayFactor="5">
               <template>
-                <a href="{{index | getUrl}}" on-click="{{navigate}}">
+                <a route="{{index}}" on-click="{{navigateIndex}}">
                   <div class="row" layout horizontal center>
-                    <core-image src="{{model.avatar}}" preload sizing="cover">
+                    <core-image src="{{model['avatar']}}" preload sizing="cover">
                     </core-image>
-                    <div flex>{{model.name}}</div>
+                    <div flex>{{model['name']}}</div>
                   </div>
                 </a>
               </template>
-            </core-list>
+            </core-list-dart>
 
           </div>
         </core-header-panel>
 
         <!-- Add contact -->
-        <a href="/add" on-click="{{navigate}}">
+        <a route="/add" on-click="{{navigate}}">
           <paper-fab icon="add" noink></paper-fab>
         </a>
       </div>
     </core-drawer-panel>
   </template>
-  <script>
-  (function() {
-    Polymer({
-      willPrepare: function() {
-        this.super();
-        this.$.list.updateSize()
-      },
-      getUrl: function(idx) {
-        return window.location.pathname + '/' + idx;
-      },
-      closeDrawer: function() {
-        // Maybe this could wait till the next frame before animating
-        // out... right now it animates while the list is rebuilding
-        // and causes some jank
-        this.$.drawerPanel.closeDrawer();
-      }
-    });
-  })();
-  </script>
+  <script type="application/dart" src="contacts_page.dart"></script>
+
 </polymer-element>

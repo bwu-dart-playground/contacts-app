@@ -10,13 +10,13 @@
   <!-- Add to homescreen meta -->
 
   <!-- Add to homescreen for Chrome on Android -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="../lib/images/touch/chrome-touch-icon-192x192.png">
 
   <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="../lib/apple-touch-icon-precomposed.png">
 
   <!-- Add to homescreen for Internet Explorer -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
@@ -27,28 +27,34 @@
 
   <!-- Conditionally load WC polyfills -->
   <!-- Thanks to https://github.com/geelen/x-gif for the snippet -->
+  <!--<script>-->
+    <!--if ('registerElement' in document-->
+      <!--&& 'createShadowRoot' in HTMLElement.prototype-->
+      <!--&& 'import' in document.createElement('link')-->
+      <!--&& 'content' in document.createElement('template')) {-->
+      <!--// We're using a browser with native WC support!-->
+    <!--} else {-->
+      <!--document.write('<script src="/bower_components/webcomponentsjs/webcomponents.js"><\/script>');-->
+    <!--}-->
+  <!--</script>-->
   <script>
-    if ('registerElement' in document
-      && 'createShadowRoot' in HTMLElement.prototype
-      && 'import' in document.createElement('link')
-      && 'content' in document.createElement('template')) {
-      // We're using a browser with native WC support!
-    } else {
-      document.write('<script src="/bower_components/webcomponentsjs/webcomponents.js"><\/script>');
+    function setCoreStyleTransitionsDuration(value) {
+      window.CoreStyle.g.transitions.duration = value;
     }
   </script>
 
   <!-- build:vulcanized /elements/elements.critical.vulcanized.html -->
-  <link rel="import" href="/elements/elements.critical.html">
+  <link rel="import" href="packages/contacts_app/elements/elements.critical.html">
   <!-- endbuild-->
 </head>
 
 <body unresolved>
-  <template id="app" is="auto-binding">
+  <template id="app" is="auto-binding-dart">
 
-    <core-ajax id="ajax"
-               url="https://polymer-contacts.firebaseio.com/{{category}}.json"
-               response="{{contacts}}"></core-ajax>
+    <!--url="https://polymer-contacts.firebaseio.com/{{category}}.json"-->
+    <core-ajax-dart id="ajax"
+               url="/contacts-app/web/data/{{category}}.json"
+               response="{{contacts}}"></core-ajax-dart>
 
     <core-media-query query="min-width: 640px" queryMatches="{{largeScreen}}">
     </core-media-query>
@@ -58,7 +64,7 @@
                          transitions="cross-fade fade-slide-up fade-scale" fit>
 
       <section layout vertical>
-        <contacts-page class="page" id="contacts" contacts="{{contacts}}"
+        <contacts-page class="page" id="contacts" contacts="{{contacts}}" category="{{category}}"
                        cross-fade?="{{largeScreen}}"
                        heading="{{heading}}"
                        flex>
@@ -86,8 +92,9 @@
   </template>
 
   <!-- build:js /scripts/app.js -->
-  <script src="/bower_components/director/build/director.js"></script>
-  <script src="/scripts/app.js"></script>
+  <!--<script src="/bower_components/director/build/director.js"></script>-->
+  <!--<script src="/scripts/app.js"></script>-->
+  <script type="application/dart" src="main.dart"></script>
   <!-- endbuild-->
 </body>
 

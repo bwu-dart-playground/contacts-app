@@ -1,8 +1,12 @@
+build/
+packages
+.pub/
+.idea/
 node_modules
 dist
 test/temp
 .sass-cache
-app/bower_components
+lib/bower_components
 .tmp
 test/bower_components/
 *.sublime-project

@@ -1,7 +1,9 @@
 <link rel="import" href="../base-page/base-page.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../../packages/paper_elements/paper_input.html">
+<link rel="import" href="../../../../packages/paper_elements/paper_dropdown.html">
+<link rel="import" href="../../../../packages/paper_elements/paper_dropdown_menu.html">
+<link rel="import" href="../../../../packages/paper_elements/paper_item.html">
+<link rel="import" href="../../../../packages/core_elements/core_menu.html">
 
 <polymer-element name="add-page" extends="base-page" layout vertical>
   <template>
@@ -106,22 +108,5 @@
 
     </core-header-panel>
   </template>
-  <script>
-  (function() {
-
-    Polymer({
-      publish: {
-        contacts: null
-      },
-      willPrepare: function() {
-        this.super();
-
-        // Reset the scroller so every time the user comes to the add page
-        // they see the top of the form
-        this.$.headerPanel.scroller.scrollTop = 0;
-      }
-    });
-
-  })();
-  </script>
+  <script type="application/dart" src="add_page.dart"></script>
 </polymer-element>
