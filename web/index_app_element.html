@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<!--
+
+                           I N F O
+
+    This is an alternative implementation to `index.html` which uses
+        <app-element></app-element>
+    instead of
+        <template id="app" is="auto-binding-dart"></template>
+-->
+<head>
+  <meta charset="utf-8">
+  <title>Polymer Contacts</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no">
+
+  <!-- Add to homescreen meta -->
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="../lib/images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon-precomposed" href="../lib/apple-touch-icon-precomposed.png">
+
+  <!-- Add to homescreen for Internet Explorer -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+  <meta name="msapplication-TileColor" content="#3F51B5">
+
+  <meta name="theme-color" content="#303F9F">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- Conditionally load WC polyfills -->
+  <!-- Thanks to https://github.com/geelen/x-gif for the snippet -->
+  <!--<script>-->
+    <!--if ('registerElement' in document-->
+      <!--&& 'createShadowRoot' in HTMLElement.prototype-->
+      <!--&& 'import' in document.createElement('link')-->
+      <!--&& 'content' in document.createElement('template')) {-->
+      <!--// We're using a browser with native WC support!-->
+    <!--} else {-->
+      <!--document.write('<script src="/bower_components/webcomponentsjs/webcomponents.js"><\/script>');-->
+    <!--}-->
+  <!--</script>-->
+  <script>
+    function setCoreStyleTransitionsDuration(value) {
+      window.CoreStyle.g.transitions.duration = value;
+    }
+  </script>
+
+  <!-- build:vulcanized /elements/elements.critical.vulcanized.html -->
+  <link rel="import" href="app_element.html">
+
+
+  <!-- endbuild-->
+</head>
+
+<body unresolved>
+  <app-element></app-element>
+
+  <!-- build:js /scripts/app.js -->
+  <!--<script src="/bower_components/director/build/director.js"></script>-->
+  <!--<script src="/scripts/app.js"></script>-->
+  <script type="application/dart">export "package:polymer/init.dart";</script>
+  <!-- endbuild-->
+</body>
+
+</html>

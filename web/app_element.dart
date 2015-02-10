@@ -3,10 +3,26 @@ import 'dart:html' as dom;
 import 'package:polymer/polymer.dart';
 import 'package:core_elements/core_animated_pages.dart';
 import 'package:contacts_app/elements/info-page/info_page.dart';
-
 import 'package:route_hierarchical/client.dart' show Router;
 
-class Model extends Object with Observable {
+@CustomTag('app-element')
+class AppElement extends PolymerElement {
+
+  static const DEFAULT_ROUTE = '/contacts/all';
+
+  CoreAnimatedPages _pages;
+  InfoPage _infoPage;
+  Router router;
+
+  AppElement.created() : super.created() {
+    // Set duration for core-animated-pages transitions
+    js.context.callMethod('setCoreStyleTransitionsDuration', ['0.2s']);
+
+    initRouter();
+  }
+
+  @observable bool largeScreen = false;
+  @observable int selected;
 
   @observable String category;
   @observable String heading;
@@ -20,15 +36,6 @@ class Model extends Object with Observable {
     }
     _contacts = toObservable(contacts);
     notifyPropertyChange(#contacts, old, _contacts);
-  }
-
-  @observable bool largeScreen = false;
-  @observable int selected;
-
-  Router router;
-
-  Model() {
-    initRouter();
   }
 
   void initRouter() {
@@ -54,7 +61,7 @@ class Model extends Object with Observable {
 
   void contactsEnter (String category) {
     this.category = category;
-    app.$['ajax'].go();
+    $['ajax'].go();
     heading = category.substring(0, 1).toUpperCase() + category.substring(1);
     if (heading == 'All') {
       heading = 'All Contacts';
@@ -63,7 +70,7 @@ class Model extends Object with Observable {
     // routes to pages in a dictionary and then use valueattr on
     // core-animated-pages to pickout which child matches the current route.
     // To keep this sample easy, we're just manually changing the page number.
-    pages.selected = 0;
+    _pages.selected = 0;
   }
 
   void infoEnter(String category, String contactId) {
@@ -71,8 +78,8 @@ class Model extends Object with Observable {
       router.gotoUrl(DEFAULT_ROUTE);
       return;
     }
-    infoPage.contactId = int.parse(contactId);
-    pages.selected = 1;
+    _infoPage.contactId = int.parse(contactId);
+    _pages.selected = 1;
   }
 
   void addEnter () {
@@ -80,53 +87,18 @@ class Model extends Object with Observable {
       router.gotoUrl(DEFAULT_ROUTE);
       return;
     }
-    pages.selected = 2;
+    _pages.selected = 2;
   }
-}
 
-AutoBindingElement app;
-CoreAnimatedPages pages;
-InfoPage infoPage;
-// Setup routing
-final DEFAULT_ROUTE = '/contacts/all';
-
-
-void main() {
-  // dummy to satisfy the di transformer
-  //brt.RouteCfg y;
-  initPolymer().run(() {
-      // code here works most of the time
-      Polymer.onReady.then((_) {
-        // some things must wait until onReady callback is called
-        // for an example look at the discussion linked below
-        initApp();
-      });
-    });
-}
-
-void initApp() {
-
-    // Install Service Worker
-//  if (dom.window.navigator.serviceWorker != null) {
-//    dom.window.navigator.serviceWorker.register('/worker.js').then((reg) {
-//      dom.window.console.log('◕‿◕, ${reg}');
-//    }, onError: (err) {
-//      dom.window.console.log('ಠ_ಠ, ${err}');
-//    });
-//  }
-
-  // Select auto-binding template and use as the top level of our app
-  app = dom.document.querySelector('template#app');
-  app.model = new Model();
-
-  app.on['template-bound'].listen((e) {
-    pages = dom.document.querySelector('#pages');
-    infoPage = dom.document.querySelector('info-page');
+  @override
+  domReady() {
+    _pages = shadowRoot.querySelector('#pages');
+    _infoPage = shadowRoot.querySelector('info-page');
 
     // Setup categories
-    app.model.category = 'all';
+    category = 'all';
 
-    app.model.router
+    router
     ..listen()
     ..gotoUrl(DEFAULT_ROUTE);
 
@@ -135,7 +107,7 @@ void initApp() {
     // handle the event here and change the route for them
     dom.document.addEventListener('change-route', (dom.CustomEvent e) {
       if (e.detail != null) {
-        app.model.router.gotoUrl(e.detail); // {'category': 'all'});
+        router.gotoUrl(e.detail); // {'category': 'all'});
       }
     });
 
@@ -146,13 +118,8 @@ void initApp() {
     });
 
     // Handle page transitions
-    pages.addEventListener('core-animated-pages-transition-prepare', (dom.Event e) {
-      pages.selectedItem.querySelector('.page').willPrepare();
+    _pages.addEventListener('core-animated-pages-transition-prepare', (dom.Event e) {
+      _pages.selectedItem.querySelector('.page').willPrepare();
     });
-
-    // Set duration for core-animated-pages transitions
-    js.context.callMethod('setCoreStyleTransitionsDuration', ['0.2s']);
-  });
+  }
 }
-
-

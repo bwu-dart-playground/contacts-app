@@ -13,6 +13,6 @@ transformers:
 - polymer:
     entry_points:
     - web/index.html
-#- di
+    - web/index_app_element.html
 
 
